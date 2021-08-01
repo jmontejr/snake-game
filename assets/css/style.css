@@ -1,0 +1,24 @@
+:root {
+    --canvas-size: 512px;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    min-height: 100vh;
+    width: 100%;
+    max-width: 100%;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.game {
+    width: var(--canvas-size, 512px);
+    height: var(--canvas-size, 512px);
+}
