@@ -1,51 +1,86 @@
-const GAME = {
+const Canvas = {
     canvasElement: null,
     canvasContext: null,
-    boxPixelsNumbers: 32,
-    snake: [],
 
-    init(canvas_id) {
-        this.setCanvasElement(canvas_id);
-        this.setCanvasContext(this.getCanvasElement());
-        this.createContextShape(this.getCanvasContext());
-        this.createSnake(this.getCanvasContext());
-    },
-
-    getCanvasElement() {
-        return this.canvasElement;
-    },
-
-    setCanvasElement(id) {
-        this.canvasElement = document.getElementById(id);
+    init(canvasId) {
+        this.canvasElement = document.getElementById(canvasId);
+        this.canvasContext = this.canvasElement.getContext("2d");
     },
 
     getCanvasContext() {
         return this.canvasContext;
     },
 
-    setCanvasContext(canvas) {
-        this.canvasContext = canvas.getContext('2d');
+    renderCanvasShape(dimensions, bgColor = "lightgreen") {
+        const { x, y, width, height } = dimensions;
+        this.getCanvasContext().fillStyle = bgColor;
+        this.getCanvasContext().fillRect(x, y, width, height);
+    },
+};
+
+const Game = {
+    screen: null,
+    squareSize: 32,
+    snake: [],
+
+    init(canvas) {
+        this.screen = canvas;
+        this.snake.push({
+            x: 8 * this.squareSize,
+            y: 8 * this.squareSize,
+        });
+
+        let start = setInterval(
+            this.startGame.bind(this), 100
+        );
     },
 
-    createContextShape(context) {
-        const squareSide = 16 * this.boxPixelsNumbers;
-        context.fillStyle = 'lightgreen';
-        context.fillRect(0, 0, squareSide, squareSide);
+    createSnake() {
+        this.snake.map((position) => {
+            const dimensions = {
+                ...position,
+                width: this.squareSize,
+                height: this.squareSize,
+            };
+            this.screen.renderCanvasShape(dimensions, "green");
+        });
     },
 
-    createSnake(context) {
-        const x = this.boxPixelsNumbers * 8;
-        const y = this.boxPixelsNumbers * 8;
-        this.snake.push({ x, y });
+    startGame() {
+        this.screen.renderCanvasShape({
+            x: 0,
+            y: 0,
+            width: 16 * this.squareSize,
+            height: 16 * this.squareSize,
+        });
 
-        for(let i = 0; i < this.snake.length; i++) {
-            const { x, y } = this.snake[i];
-            context.fillStyle = 'green';
-            context.fillRect(x, y, this.boxPixelsNumbers, this.boxPixelsNumbers);
-        }
+        this.createSnake();
+        const snake = { ...this.snake[0] };
+
+        let direction  = 'right';
+
+        const moveCommands = {
+            right: function(snake, size) {
+                snake.x += size;
+            },
+            left: function(snake, size) {
+                snake.x += size;
+            },
+            up: function(snake, size) {
+                snake.y += size;
+            },
+            down: function(snake, size) {
+                snake.y += size;
+            },
+        };
+
+        moveCommands[direction](snake, this.squareSize);
+        this.snake.pop();
+        const newHead = { ...snake };
+        this.snake.unshift(newHead);
     }
 };
 
-((app) => {
-    app.init('snake');
-})(GAME);
+const canvasItem = Canvas;
+canvasItem.init("snake");
+Game.init(canvasItem);
