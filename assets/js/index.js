@@ -45,7 +45,7 @@ const Game = {
                 width: this.squareSize,
                 height: this.squareSize,
             };
-            this.screen.renderCanvasShape(dimensions, "green");
+            return this.screen.renderCanvasShape(dimensions, "green");
         });
     },
 
