@@ -2,6 +2,12 @@
 
 <p align="center">The classic Snake game made with JavaScript</p>
 
+<p align="center">
+<a href="https://sonarcloud.io/dashboard?id=jmontejr_snake-game">
+<img alt="Quality Gate Status" src="https://sonarcloud.io/api/project_badges/measure?project=jmontejr_snake-game&metric=alert_status">
+</a>
+</p>
+
 <br>
 
 ## Table of contents
