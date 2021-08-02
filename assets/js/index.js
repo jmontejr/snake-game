@@ -39,13 +39,13 @@ const Game = {
     },
 
     createSnake() {
-        this.snake.map((position) => {
+        this.snake.forEach((position) => {
             const dimensions = {
                 ...position,
                 width: this.squareSize,
                 height: this.squareSize,
             };
-            return this.screen.renderCanvasShape(dimensions, "green");
+            this.screen.renderCanvasShape(dimensions, "green");
         });
     },
 
@@ -152,22 +152,22 @@ const Game = {
         const snake = { ...this.snake[0] };
 
         const moveCommands = {
-            ArrowRight: function (snake, size) {
+            ArrowRight: function(size) {
                 snake.x += size;
             },
-            ArrowLeft: function (snake, size) {
+            ArrowLeft: function(size) {
                 snake.x -= size;
             },
-            ArrowUp: function (snake, size) {
+            ArrowUp: function(size) {
                 snake.y -= size;
             },
-            ArrowDown: function (snake, size) {
+            ArrowDown: function(size) {
                 snake.y += size;
             },
         };
 
         if (moveCommands[this.direction])
-            moveCommands[this.direction](snake, this.squareSize);
+            moveCommands[this.direction](this.squareSize);
 
         if (snake.x !== this.food.x || snake.y !== this.food.y) {
             this.snake.pop();

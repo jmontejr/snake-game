@@ -62,6 +62,7 @@ Go to the [top](#title).
 ### Suggested Ideas:
 - Adding the game reset option;
 - Adding speed difficulty level based on score;
+- Responsive Layout;
 - New refactoring, separating concepts and responsibilities from methods and objects, applying SOLID concepts as an example.
 
 
