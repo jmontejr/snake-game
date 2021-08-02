@@ -22,6 +22,7 @@ const Game = {
     screen: null,
     squareSize: 32,
     snake: [],
+    direction: 'ArrowRight',
 
     init(canvas) {
         this.screen = canvas;
@@ -46,7 +47,7 @@ const Game = {
         });
     },
 
-    startGame() {
+    renderScreen() {
         this.screen.renderCanvasShape({
             x: 0,
             y: 0,
@@ -55,26 +56,57 @@ const Game = {
         });
 
         this.createSnake();
+    },
+
+    passingSnake() {
+        if(this.snake[0].x > 15 * this.squareSize) {
+            this.snake[0].x = 0;
+        }
+        if(this.snake[0].x < 0) {
+            this.snake[0].x = 16 * this.squareSize;
+        }
+        if(this.snake[0].y > 15 * this.squareSize) {
+            this.snake[0].y = 0;
+        }
+        if(this.snake[0].y < 0) {
+            this.snake[0].y = 16 * this.squareSize;
+        }
+    },
+
+    handleKeyDown(event) {
+        console.log(`KeyDown Listener disptach ${event.code} pressed!`);
+        this.direction = event.code;
+    },
+
+    KeyboardEventListener() {
+        // let direction = this.direction;
+        document.addEventListener('keydown', this.handleKeyDown.bind(this));
+    },
+
+    startGame() {
+        this.passingSnake();
+        this.renderScreen();
+
+        this.KeyboardEventListener();
+
         const snake = { ...this.snake[0] };
 
-        let direction  = 'right';
-
         const moveCommands = {
-            right: function(snake, size) {
+            ArrowRight: function(snake, size) {
                 snake.x += size;
             },
-            left: function(snake, size) {
-                snake.x += size;
+            ArrowLeft: function(snake, size) {
+                snake.x -= size;
             },
-            up: function(snake, size) {
-                snake.y += size;
+            ArrowUp: function(snake, size) {
+                snake.y -= size;
             },
-            down: function(snake, size) {
+            ArrowDown: function(snake, size) {
                 snake.y += size;
             },
         };
 
-        moveCommands[direction](snake, this.squareSize);
+        if(moveCommands[this.direction]) moveCommands[this.direction](snake, this.squareSize);
         this.snake.pop();
         const newHead = { ...snake };
         this.snake.unshift(newHead);
